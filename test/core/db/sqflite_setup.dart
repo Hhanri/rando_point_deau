@@ -12,3 +12,9 @@ Future<Database> sqfliteTestDb() async {
   );
   return db;
 }
+
+Future<void> Function() clearTestDb(Database db) {
+  return () async {
+    await db.delete(SQFliteConfig.waterSourcesTable);
+  };
+}
