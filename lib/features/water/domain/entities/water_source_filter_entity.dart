@@ -6,7 +6,7 @@ typedef GeoBounds = ({GeoPoint tl, GeoPoint br});
 
 base class WaterSourceFilterEntity extends Equatable {
 
-  final List<Water>? waterTypes;
+  final List<Water> waterTypes;
   final GeoBounds bounds;
 
   const WaterSourceFilterEntity({
