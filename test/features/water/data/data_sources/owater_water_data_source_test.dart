@@ -7,10 +7,6 @@ import 'package:rando_point_deau/features/water/domain/enum/water_enum.dart';
 import '../../../../test_setup/mock_http.dart';
 
 void main() {
-  final client = MockHttpClient();
-
-  final dataSource = OwaterWaterDataSource(client);
-
   group("owater water data source test", () {
     const body = '''{
       "licence": "https://opendatacommons.org/licenses/odbl/summary/",

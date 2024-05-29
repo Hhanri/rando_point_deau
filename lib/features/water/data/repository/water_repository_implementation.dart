@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:rando_point_deau/core/http/send_http_with_progress.dart';
 import 'package:rando_point_deau/core/result/result.dart';
 import 'package:rando_point_deau/features/water/data/data_sources/water_local_data_source_interface.dart';
 import 'package:rando_point_deau/features/water/data/data_sources/water_remote_data_source_interface.dart';
@@ -16,9 +17,13 @@ final class WaterRepositoryImplementation implements WaterRepositoryInterface {
   });
 
   @override
-  TaskEither<Failure, EmptySuccess> downloadAndSave() {
+  TaskEither<Failure, EmptySuccess> downloadAndSave({
+    ProgressCallback? progressCallback,
+  }) {
     return execute(() async {
-      final sources = await remoteDataSource.getAllWaterSources();
+      final sources = await remoteDataSource.getAllWaterSources(
+        progressCallback: progressCallback,
+      );
       return await localDataSource.insertWaterSources(sources);
     });
   }
