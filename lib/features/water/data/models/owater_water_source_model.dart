@@ -3,12 +3,11 @@ import 'package:rando_point_deau/features/water/domain/entities/water_source_ent
 import 'package:rando_point_deau/features/water/domain/enum/water_enum.dart';
 
 final class OwaterWaterSourceModel extends WaterSourceEntity {
-
   const OwaterWaterSourceModel({
     required super.id,
     required super.name,
     required super.geoPoint,
-    required super.waterType
+    required super.waterType,
   });
 
   factory OwaterWaterSourceModel.fromJson(Map<String, dynamic> json) {
@@ -20,8 +19,8 @@ final class OwaterWaterSourceModel extends WaterSourceEntity {
         lng: json["geo"]["longitude"],
       ),
       waterType: owaterWaterTypeParser(
-        (json["categories"] as List).firstOrNull ?? ""
-      )
+        (json["categories"] as List).firstOrNull ?? "",
+      ),
     );
   }
 
@@ -37,18 +36,17 @@ final class OwaterWaterSourceModel extends WaterSourceEntity {
 
   @override
   List<Object?> get props => [
-    id,
-    name,
-    geoPoint,
-    waterType,
-  ];
-
+        id,
+        name,
+        geoPoint,
+        waterType,
+      ];
 }
 
 WaterEnumParser owaterWaterTypeParser = (String value) {
-  return switch(value) {
+  return switch (value) {
     "Drinking water" => Water.drinking,
-    "Non-drinkable water" => Water.nonDrinking,
-    _ => Water.nonDrinking,
+    "Non-drinkable water" => Water.nonDrinkable,
+    _ => Water.nonDrinkable,
   };
 };

@@ -82,7 +82,7 @@ main() async {
         id: "id3",
         name: "name3",
         geoPoint: GeoPoint(lat: -30, lng: 130),
-        waterType: Water.nonDrinking,
+        waterType: Water.nonDrinkable,
       );
 
       setUpAll(() async {
@@ -106,7 +106,7 @@ main() async {
 
       test("get all items (all water types)", () async {
         const filter = WaterSourceFilterEntity(
-          waterTypes: [Water.drinking, Water.nonDrinking],
+          waterTypes: [Water.drinking, Water.nonDrinkable],
           bounds: (
             tl: GeoPoint(lat: 90, lng: -180),
             br: GeoPoint(lat: -90, lng: 180),
@@ -145,7 +145,7 @@ main() async {
 
       test("get all non drinking water sources", () async {
         const filter = WaterSourceFilterEntity(
-          waterTypes: [Water.nonDrinking],
+          waterTypes: [Water.nonDrinkable],
           bounds: (
             tl: GeoPoint(lat: 90, lng: -180),
             br: GeoPoint(lat: -90, lng: 180),
@@ -171,7 +171,7 @@ main() async {
 
       test("get nonnn drinking water sources in scoped bounds", () async {
         const filter = WaterSourceFilterEntity(
-          waterTypes: [Water.nonDrinking],
+          waterTypes: [Water.nonDrinkable],
           bounds: (
             tl: GeoPoint(lat: -20, lng: 120),
             br: GeoPoint(lat: -40, lng: 140),
@@ -205,7 +205,7 @@ main() async {
         id: "id3",
         name: "name3",
         geoPoint: GeoPoint(lat: -30, lng: 130),
-        waterType: Water.nonDrinking,
+        waterType: Water.nonDrinkable,
       );
 
       setUpAll(() async {
@@ -229,7 +229,7 @@ main() async {
 
       test("get wrap around on extremities", () async {
         const filter = WaterSourceFilterEntity(
-          waterTypes: [Water.drinking, Water.nonDrinking],
+          waterTypes: [Water.drinking, Water.nonDrinkable],
           bounds: (
             tl: GeoPoint(lat: 90, lng: 180),
             br: GeoPoint(lat: -90, lng: -180)
@@ -242,7 +242,7 @@ main() async {
 
       test("get wrap around all items", () async {
         const filter = WaterSourceFilterEntity(
-          waterTypes: [Water.drinking, Water.nonDrinking],
+          waterTypes: [Water.drinking, Water.nonDrinkable],
           bounds: (
             tl: GeoPoint(lat: 90, lng: 0),
             br: GeoPoint(lat: -90, lng: 0)
@@ -281,7 +281,7 @@ main() async {
 
       test("get all non drinking water sources", () async {
         const filter = WaterSourceFilterEntity(
-          waterTypes: [Water.nonDrinking],
+          waterTypes: [Water.nonDrinkable],
           bounds: (
             tl: GeoPoint(lat: 90, lng: 0),
             br: GeoPoint(lat: -90, lng: 0),
@@ -307,7 +307,7 @@ main() async {
 
       test("get nonn drinking water sources in scoped bounds", () async {
         const filter = WaterSourceFilterEntity(
-          waterTypes: [Water.nonDrinking],
+          waterTypes: [Water.nonDrinkable],
           bounds: (
             tl: GeoPoint(lat: 40, lng: 120),
             br: GeoPoint(lat: -40, lng: -120),

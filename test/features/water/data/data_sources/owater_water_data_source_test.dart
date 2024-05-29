@@ -168,31 +168,31 @@ void main() {
           id: "mV",
           name: "Fountain",
           geoPoint: GeoPoint(lat: 43.95605, lng: 5.02951),
-          waterType: Water.nonDrinking,
+          waterType: Water.nonDrinkable,
         ),
         OwaterWaterSourceModel(
           id: "mW",
           name: "Fountain",
           geoPoint: GeoPoint(lat: 43.95662, lng: 5.02932),
-          waterType: Water.nonDrinking,
+          waterType: Water.nonDrinkable,
         ),
         OwaterWaterSourceModel(
           id: "mX",
           name: "Fountain",
           geoPoint: GeoPoint(lat: 43.95656, lng: 5.02796),
-          waterType: Water.nonDrinking,
+          waterType: Water.nonDrinkable,
         ),
         OwaterWaterSourceModel(
           id: "mY",
           name: "Fountain",
           geoPoint: GeoPoint(lat: 43.95577, lng: 5.02861),
-          waterType: Water.nonDrinking,
+          waterType: Water.nonDrinkable,
         ),
         OwaterWaterSourceModel(
           id: "mZ",
           name: "Fountain",
           geoPoint: GeoPoint(lat: 43.95743, lng: 5.02968),
-          waterType: Water.nonDrinking,
+          waterType: Water.nonDrinkable,
         ),
       ];
 

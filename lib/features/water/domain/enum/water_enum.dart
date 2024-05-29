@@ -1,12 +1,12 @@
 enum Water {
   drinking,
-  nonDrinking;
+  nonDrinkable;
 
   static Water defaultParse(String value) {
-    return switch(value) {
+    return switch (value) {
       "drinking" => Water.drinking,
-      "nonDrinking" => Water.nonDrinking,
-      _ => Water.nonDrinking,
+      "nonDrinkable" => Water.nonDrinkable,
+      _ => Water.nonDrinkable,
     };
   }
 }
