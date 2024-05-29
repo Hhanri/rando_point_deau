@@ -3,11 +3,11 @@ import 'package:rando_point_deau/features/water/domain/entities/water_source_ent
 import 'package:rando_point_deau/features/water/domain/entities/water_source_filter_entity.dart';
 
 abstract interface class WaterLocalDataSourceInterface {
-
   Future<Empty> insertWaterSources(List<WaterSourceEntity> waterSources);
 
   Future<List<WaterSourceEntity>> get(WaterSourceFilterEntity filter);
 
-  Future<bool> hasData();
+  Future<List<WaterSourceEntity>> getWrapAround(WaterSourceFilterEntity filter);
 
+  Future<bool> hasData();
 }

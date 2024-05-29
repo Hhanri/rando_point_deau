@@ -96,7 +96,7 @@ main() async {
           waterTypes: [Water.drinking],
           bounds: (
             tl: GeoPoint(lat: 10, lng: -10),
-            br: GeoPoint(lat: 200, lng: -20)
+            br: GeoPoint(lat: 20, lng: -20),
           ),
         );
 
@@ -109,7 +109,7 @@ main() async {
           waterTypes: [Water.drinking, Water.nonDrinking],
           bounds: (
             tl: GeoPoint(lat: 90, lng: -180),
-            br: GeoPoint(lat: -90, lng: 180)
+            br: GeoPoint(lat: -90, lng: 180),
           ),
         );
 
@@ -122,7 +122,7 @@ main() async {
           waterTypes: [],
           bounds: (
             tl: GeoPoint(lat: 90, lng: -180),
-            br: GeoPoint(lat: -90, lng: 180)
+            br: GeoPoint(lat: -90, lng: 180),
           ),
         );
 
@@ -143,21 +143,18 @@ main() async {
         expect(res, [sample1, sample2]);
       });
 
-      test(
-        "get all non drinking water sources",
-        () async {
-          const filter = WaterSourceFilterEntity(
-            waterTypes: [Water.nonDrinking],
-            bounds: (
-              tl: GeoPoint(lat: 90, lng: -180),
-              br: GeoPoint(lat: -90, lng: 180),
-            ),
-          );
+      test("get all non drinking water sources", () async {
+        const filter = WaterSourceFilterEntity(
+          waterTypes: [Water.nonDrinking],
+          bounds: (
+            tl: GeoPoint(lat: 90, lng: -180),
+            br: GeoPoint(lat: -90, lng: 180),
+          ),
+        );
 
-          final res = await dataSource.get(filter);
-          expect(res, [sample3]);
-        },
-      );
+        final res = await dataSource.get(filter);
+        expect(res, [sample3]);
+      });
 
       test("get drinking water sources in scoped bounds", () async {
         const filter = WaterSourceFilterEntity(
@@ -182,6 +179,142 @@ main() async {
         );
 
         final res = await dataSource.get(filter);
+        expect(
+          res,
+          [sample3],
+        );
+      });
+    });
+
+    group("get wrap around", () {
+      const sample1 = SQFliteWaterSourceModel(
+        id: "id1",
+        name: "name1",
+        geoPoint: GeoPoint(lat: 30, lng: -130),
+        waterType: Water.drinking,
+      );
+
+      const sample2 = SQFliteWaterSourceModel(
+        id: "id2",
+        name: "name2",
+        geoPoint: GeoPoint(lat: 0, lng: 0),
+        waterType: Water.drinking,
+      );
+
+      const sample3 = SQFliteWaterSourceModel(
+        id: "id3",
+        name: "name3",
+        geoPoint: GeoPoint(lat: -30, lng: 130),
+        waterType: Water.nonDrinking,
+      );
+
+      setUpAll(() async {
+        await dataSource.insertWaterSources([sample1, sample2, sample3]);
+      });
+
+      tearDownAll(clearTestDb(db));
+
+      test("get no item", () async {
+        const filter = WaterSourceFilterEntity(
+          waterTypes: [Water.drinking],
+          bounds: (
+            tl: GeoPoint(lat: 10, lng: 140),
+            br: GeoPoint(lat: -20, lng: -140),
+          ),
+        );
+
+        final res = await dataSource.getWrapAround(filter);
+        expect(res.isEmpty, true);
+      });
+
+      test("get wrap around on extremities", () async {
+        const filter = WaterSourceFilterEntity(
+          waterTypes: [Water.drinking, Water.nonDrinking],
+          bounds: (
+            tl: GeoPoint(lat: 90, lng: 180),
+            br: GeoPoint(lat: -90, lng: -180)
+          ),
+        );
+
+        final res = await dataSource.getWrapAround(filter);
+        expect(res.isEmpty, true);
+      });
+
+      test("get wrap around all items", () async {
+        const filter = WaterSourceFilterEntity(
+          waterTypes: [Water.drinking, Water.nonDrinking],
+          bounds: (
+            tl: GeoPoint(lat: 90, lng: 0),
+            br: GeoPoint(lat: -90, lng: 0)
+          ),
+        );
+
+        final res = await dataSource.getWrapAround(filter);
+        expect(res, [sample1, sample2, sample3]);
+      });
+
+      test("get all items (empty water types)", () async {
+        const filter = WaterSourceFilterEntity(
+          waterTypes: [],
+          bounds: (
+            tl: GeoPoint(lat: 90, lng: 0),
+            br: GeoPoint(lat: -90, lng: 0)
+          ),
+        );
+
+        final res = await dataSource.getWrapAround(filter);
+        expect(res, [sample1, sample2, sample3]);
+      });
+
+      test("get all drinking water sources", () async {
+        const filter = WaterSourceFilterEntity(
+          waterTypes: [Water.drinking],
+          bounds: (
+            tl: GeoPoint(lat: 90, lng: 0),
+            br: GeoPoint(lat: -90, lng: 0),
+          ),
+        );
+
+        final res = await dataSource.getWrapAround(filter);
+        expect(res, [sample1, sample2]);
+      });
+
+      test("get all non drinking water sources", () async {
+        const filter = WaterSourceFilterEntity(
+          waterTypes: [Water.nonDrinking],
+          bounds: (
+            tl: GeoPoint(lat: 90, lng: 0),
+            br: GeoPoint(lat: -90, lng: 0),
+          ),
+        );
+
+        final res = await dataSource.getWrapAround(filter);
+        expect(res, [sample3]);
+      });
+
+      test("get drinking water sources in scoped bounds", () async {
+        const filter = WaterSourceFilterEntity(
+          waterTypes: [Water.drinking],
+          bounds: (
+            tl: GeoPoint(lat: 40, lng: 120),
+            br: GeoPoint(lat: -40, lng: -120),
+          ),
+        );
+
+        final res = await dataSource.getWrapAround(filter);
+        expect(res, [sample1]);
+      });
+
+      test("get nonn drinking water sources in scoped bounds", () async {
+        const filter = WaterSourceFilterEntity(
+          waterTypes: [Water.nonDrinking],
+          bounds: (
+            tl: GeoPoint(lat: 40, lng: 120),
+            br: GeoPoint(lat: -40, lng: -120),
+          ),
+        );
+
+        final res = await dataSource.getWrapAround(filter);
         expect(
           res,
           [sample3],
