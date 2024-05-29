@@ -7,11 +7,13 @@ import 'package:rando_point_deau/features/water/domain/entities/water_source_fil
 import 'package:rando_point_deau/features/water/domain/repository/water_repository_interface.dart';
 
 final class WaterRepositoryImplementation implements WaterRepositoryInterface {
-
   final WaterLocalDataSourceInterface localDataSource;
   final WaterRemoteDataSourceInterface remoteDataSource;
 
-  WaterRepositoryImplementation({required this.localDataSource, required this.remoteDataSource});
+  WaterRepositoryImplementation({
+    required this.localDataSource,
+    required this.remoteDataSource,
+  });
 
   @override
   TaskEither<Failure, EmptySuccess> downloadAndSave() {
@@ -27,8 +29,13 @@ final class WaterRepositoryImplementation implements WaterRepositoryInterface {
   }
 
   @override
-  TaskEither<Failure, Success<List<WaterSourceEntity>>> search(WaterSourceFilterEntity filter) {
-    return execute(() => localDataSource.get(filter));
+  TaskEither<Failure, Success<List<WaterSourceEntity>>> search(
+    WaterSourceFilterEntity filter,
+  ) {
+    return execute(
+      () => filter.bounds.isCrossAntiMeridian
+          ? localDataSource.getWrapAround(filter)
+          : localDataSource.get(filter),
+    );
   }
-
 }
