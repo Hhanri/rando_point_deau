@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -8,6 +9,10 @@ typedef Progress = ({
   num total,
 });
 
+extension ProgressExtensions on Progress {
+  bool get isComplete => received >= total;
+}
+
 typedef ProgressCallback = void Function(Progress progress);
 
 Future<T> sendHttpWithProgress<T>({
@@ -16,6 +21,7 @@ Future<T> sendHttpWithProgress<T>({
   required String url,
   required T Function(String) bodyTransformer,
   ProgressCallback? progressCallback,
+  num defaultTotal = double.maxFinite,
 }) async {
   final List<int> bytes = [];
 
@@ -26,7 +32,7 @@ Future<T> sendHttpWithProgress<T>({
     ),
   );
 
-  final total = response.contentLength ?? double.maxFinite;
+  final total = response.contentLength ?? defaultTotal;
   int received = 0;
 
   await response.stream.forEach((value) {
