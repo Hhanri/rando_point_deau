@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:rando_point_deau/config/setup_container.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setupSL();
   runApp(const MyApp());
 }
 
