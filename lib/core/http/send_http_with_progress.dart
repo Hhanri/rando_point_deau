@@ -3,7 +3,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rando_point_deau/core/http/http_methods.dart';
 
-typedef ProgressCallback = void Function({num received, num total});
+typedef Progress = ({
+  num received,
+  num total,
+});
+
+typedef ProgressCallback = void Function(Progress progress);
 
 Future<T> sendHttpWithProgress<T>({
   required http.Client client,
@@ -27,7 +32,9 @@ Future<T> sendHttpWithProgress<T>({
   await response.stream.forEach((value) {
     bytes.addAll(value);
     received += value.length;
-    progressCallback?.call(received: received, total: total);
+
+    final Progress progress = (received: received, total: total);
+    progressCallback?.call(progress);
   });
 
   final body = utf8.decode(bytes);
