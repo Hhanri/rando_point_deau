@@ -14,8 +14,16 @@ class OnboardingPage extends StatelessWidget {
       bottomNavigationBar: BlocBuilder<OnboardingCubit, OnboardingState>(
         builder: (context, state) {
           if (state is OnboardingDownloading) {
-            return LinearProgressIndicator(
-              value: state.progress.received / state.progress.total,
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(state.progress.title),
+                Flexible(
+                  child: LinearProgressIndicator(
+                    value: state.progress.progress / state.progress.total,
+                  ),
+                ),
+              ],
             );
           }
           if (state is OnboardingReady) {
