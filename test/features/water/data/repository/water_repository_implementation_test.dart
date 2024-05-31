@@ -233,7 +233,9 @@ void main() {
 
       test("download failure", () async {
         when(
-          remoteDataSource.getAllWaterSources,
+          () => remoteDataSource.getAllWaterSources(
+            stepProgress: (current: 1, total: 2),
+          ),
         ).thenThrow("download error");
 
         final res = await repo.downloadAndSave().run();
@@ -245,13 +247,19 @@ void main() {
           ),
         );
 
-        verify(remoteDataSource.getAllWaterSources).called(1);
+        verify(
+          () => remoteDataSource.getAllWaterSources(
+            stepProgress: (current: 1, total: 2),
+          ),
+        ).called(1);
         verifyNever(() => localDataSource.insertWaterSources(sample));
       });
 
       test("download success, insert error", () async {
         when(
-          remoteDataSource.getAllWaterSources,
+          () => remoteDataSource.getAllWaterSources(
+            stepProgress: (current: 1, total: 2),
+          ),
         ).thenAnswer((_) async => sample);
 
         when(
@@ -267,13 +275,19 @@ void main() {
           ),
         );
 
-        verify(remoteDataSource.getAllWaterSources).called(1);
         verify(() => localDataSource.insertWaterSources(sample)).called(1);
+        verify(
+          () => remoteDataSource.getAllWaterSources(
+            stepProgress: (current: 1, total: 2),
+          ),
+        ).called(1);
       });
 
       test("download success, insert success", () async {
         when(
-          remoteDataSource.getAllWaterSources,
+          () => remoteDataSource.getAllWaterSources(
+            stepProgress: (current: 1, total: 2),
+          ),
         ).thenAnswer((_) async => sample);
 
         when(
@@ -289,8 +303,12 @@ void main() {
           const Right<Failure, EmptySuccess>(Success(value: Empty())),
         );
 
-        verify(remoteDataSource.getAllWaterSources).called(1);
         verify(() => localDataSource.insertWaterSources(sample)).called(1);
+        verify(
+          () => remoteDataSource.getAllWaterSources(
+            stepProgress: (current: 1, total: 2),
+          ),
+        ).called(1);
       });
     });
   });

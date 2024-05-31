@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:rando_point_deau/core/http/send_http_with_progress.dart';
 import 'package:rando_point_deau/core/result/result.dart';
+import 'package:rando_point_deau/core/value_objects/progress.dart';
 import 'package:rando_point_deau/features/water/data/data_sources/water_local_data_source_interface.dart';
 import 'package:rando_point_deau/features/water/data/data_sources/water_remote_data_source_interface.dart';
 import 'package:rando_point_deau/features/water/domain/entities/water_source_entity.dart';
@@ -23,6 +23,8 @@ final class WaterRepositoryImplementation implements WaterRepositoryInterface {
     return execute(() async {
       final sources = await remoteDataSource.getAllWaterSources(
         progressCallback: progressCallback,
+        stepProgress: (current: 1, total: 2),
+      );
       );
       await localDataSource.insertWaterSources(sources);
       sources.clear();
