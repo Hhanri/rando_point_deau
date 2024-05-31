@@ -103,7 +103,7 @@ void main() {
 
         when(
           () => waterDownloadAndSaveUseCase.call(
-            progressCallback: cubit.emitDownloadProgress,
+            progressCallback: any(named: "progressCallback"),
           ),
         ).thenAnswer(
           (_) => TaskEither.left(
@@ -127,7 +127,7 @@ void main() {
 
         when(
           () => waterDownloadAndSaveUseCase.call(
-            progressCallback: cubit.emitDownloadProgress,
+            progressCallback: any(named: "progressCallback"),
           ),
         ).thenAnswer(
           (_) => TaskEither.right(
