@@ -15,8 +15,8 @@ final class OwaterWaterSourceModel extends WaterSourceEntity {
       id: json['id'],
       name: json['name'],
       geoPoint: GeoPoint(
-        lat: json["geo"]["latitude"],
-        lng: json["geo"]["longitude"],
+        lat: (json["geo"]["latitude"] as num).toDouble(),
+        lng: (json["geo"]["longitude"] as num).toDouble(),
       ),
       waterType: owaterWaterTypeParser(
         (json["categories"] as List).firstOrNull ?? "",

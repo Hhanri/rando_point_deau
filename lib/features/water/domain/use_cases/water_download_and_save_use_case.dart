@@ -11,6 +11,8 @@ interface class WaterDownloadAndSaveUseCase {
   TaskEither<Failure, EmptySuccess> call({
     ProgressCallback? progressCallback,
   }) {
-    return repo.downloadAndSave();
+    return repo.downloadAndSave(
+      progressCallback: progressCallback,
+    );
   }
 }
