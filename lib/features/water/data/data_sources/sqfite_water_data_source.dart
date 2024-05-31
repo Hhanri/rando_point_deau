@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:rando_point_deau/core/db/sqflite_setup.dart';
 import 'package:rando_point_deau/core/result/empty.dart';
 import 'package:rando_point_deau/features/water/data/data_sources/water_local_data_source_interface.dart';
@@ -79,11 +81,29 @@ final class SQFliteWaterDataSource implements WaterLocalDataSourceInterface {
 
   @override
   Future<Empty> insertWaterSources(List<WaterSourceEntity> waterSources) async {
-    final batch = db.batch();
-    for (final item in waterSources) {
-      batch.insert(SQFliteConfig.waterSourcesTable, item.toJson());
+    const int batchSize = 20000;
+    final batchNum = (waterSources.length / batchSize).ceil();
+
+    Future<void> handleBatch(
+      int batchN,
+      int batchSize,
+      List<WaterSourceEntity> waterSources,
+    ) async {
+      final batch = db.batch();
+      final begin = batchSize * batchN;
+      final end = min(batchSize * (batchN + 1), waterSources.length);
+      for (int i = begin; i < end; i++) {
+        batch.insert(SQFliteConfig.waterSourcesTable, waterSources[i].toJson());
+      }
+      await batch.commit();
     }
-    await batch.commit();
+
+    final List<Future<void>> batchHandlers = [];
+    for (int i = 0; i < batchNum; i++) {
+      batchHandlers.add(handleBatch(i, batchSize, waterSources));
+    }
+
+    await Future.wait(batchHandlers);
     return const Empty();
   }
 }
