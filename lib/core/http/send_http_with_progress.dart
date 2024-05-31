@@ -13,13 +13,25 @@ extension ProgressExtensions on Progress {
   bool get isComplete => received >= total;
 }
 
+final class StringWrapper {
+  String _value;
+
+  StringWrapper(this._value);
+
+  String get value => _value;
+
+  void clear() {
+    _value = "";
+  }
+}
+
 typedef ProgressCallback = void Function(Progress progress);
 
 Future<T> sendHttpWithProgress<T>({
   required http.Client client,
   required HttpMethod method,
   required String url,
-  required T Function(String) bodyTransformer,
+  required FutureOr<T> Function(StringWrapper) bodyTransformer,
   ProgressCallback? progressCallback,
   num defaultTotal = double.maxFinite,
 }) async {
@@ -44,5 +56,6 @@ Future<T> sendHttpWithProgress<T>({
   });
 
   final body = utf8.decode(bytes);
-  return bodyTransformer(body);
+  bytes.clear();
+  return await bodyTransformer(StringWrapper(body));
 }
