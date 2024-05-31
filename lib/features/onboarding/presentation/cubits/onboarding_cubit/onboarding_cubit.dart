@@ -4,8 +4,8 @@ import 'dart:isolate';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rando_point_deau/core/http/send_http_with_progress.dart';
 import 'package:rando_point_deau/core/result/result.dart';
+import 'package:rando_point_deau/core/value_objects/progress.dart';
 import 'package:rando_point_deau/features/water/domain/use_cases/water_download_and_save_use_case.dart';
 import 'package:rando_point_deau/features/water/domain/use_cases/water_has_local_data_use_case.dart';
 

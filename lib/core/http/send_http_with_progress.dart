@@ -3,15 +3,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:rando_point_deau/core/http/http_methods.dart';
-
-typedef Progress = ({
-  num received,
-  num total,
-});
-
-extension ProgressExtensions on Progress {
-  bool get isComplete => received >= total;
-}
+import 'package:rando_point_deau/core/value_objects/progress.dart';
 
 final class StringWrapper {
   String _value;
@@ -25,8 +17,6 @@ final class StringWrapper {
   }
 }
 
-typedef ProgressCallback = void Function(Progress progress);
-
 Future<T> sendHttpWithProgress<T>({
   required http.Client client,
   required HttpMethod method,
@@ -34,6 +24,7 @@ Future<T> sendHttpWithProgress<T>({
   required FutureOr<T> Function(StringWrapper) bodyTransformer,
   ProgressCallback? progressCallback,
   num defaultTotal = double.maxFinite,
+  StepProgress? stepProgress,
 }) async {
   final List<int> bytes = [];
 
@@ -51,7 +42,11 @@ Future<T> sendHttpWithProgress<T>({
     bytes.addAll(value);
     received += value.length;
 
-    final Progress progress = (received: received, total: total);
+    final Progress progress = Progress.httpDownload(
+      progress: received,
+      total: total,
+      stepProgress: stepProgress,
+    );
     progressCallback?.call(progress);
   });
 

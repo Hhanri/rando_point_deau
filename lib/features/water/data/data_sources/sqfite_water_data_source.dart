@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:rando_point_deau/core/db/sqflite_setup.dart';
 import 'package:rando_point_deau/core/result/empty.dart';
+import 'package:rando_point_deau/core/value_objects/progress.dart';
 import 'package:rando_point_deau/features/water/data/data_sources/water_local_data_source_interface.dart';
 import 'package:rando_point_deau/features/water/data/models/sqflite_water_source_model.dart';
 import 'package:rando_point_deau/features/water/domain/entities/water_source_entity.dart';
@@ -80,14 +81,21 @@ final class SQFliteWaterDataSource implements WaterLocalDataSourceInterface {
   }
 
   @override
-  Future<Empty> insertWaterSources(List<WaterSourceEntity> waterSources) async {
+  Future<Empty> insertWaterSources(
+    List<WaterSourceEntity> waterSources, {
+    StepProgress? stepProgress,
+    ProgressCallback? progressCallback,
+  }) async {
     const int batchSize = 20000;
     final batchNum = (waterSources.length / batchSize).ceil();
+
+    int treated = 0;
 
     Future<void> handleBatch(
       int batchN,
       int batchSize,
       List<WaterSourceEntity> waterSources,
+      ProgressCallback? progressCallback,
     ) async {
       final batch = db.batch();
       final begin = batchSize * batchN;
@@ -96,11 +104,27 @@ final class SQFliteWaterDataSource implements WaterLocalDataSourceInterface {
         batch.insert(SQFliteConfig.waterSourcesTable, waterSources[i].toJson());
       }
       await batch.commit();
+      treated += (end - begin);
+
+      final Progress progress = Progress.dbInsert(
+        progress: treated,
+        total: waterSources.length,
+        stepProgress: stepProgress,
+      );
+
+      progressCallback?.call(progress);
     }
 
     final List<Future<void>> batchHandlers = [];
     for (int i = 0; i < batchNum; i++) {
-      batchHandlers.add(handleBatch(i, batchSize, waterSources));
+      batchHandlers.add(
+        handleBatch(
+          i,
+          batchSize,
+          waterSources,
+          progressCallback,
+        ),
+      );
     }
 
     await Future.wait(batchHandlers);
