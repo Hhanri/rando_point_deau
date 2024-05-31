@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rando_point_deau/core/value_objects/geopoint.dart';
 import 'package:rando_point_deau/features/water/data/data_sources/owater_water_data_source.dart';
@@ -8,123 +10,73 @@ import '../../../../test_setup/mock_http.dart';
 
 void main() {
   group("owater water data source test", () {
-    const body = '''{
+    const json = {
       "licence": "https://opendatacommons.org/licenses/odbl/summary/",
-      "ontology":"gogofull",
+      "ontology": "gogofull",
       "data": [
         {
           "id": "mM",
           "name": "Fountain",
-          "geo": {
-            "latitude": 48.88482,
-            "longitude": 2.29816
-          },
-          
-          "categories": [
-            "Drinking water"
-          ]
+          "geo": {"latitude": 48.88482, "longitude": 2.29816},
+          "categories": ["Drinking water"]
         },
         {
           "id": "mR",
           "name": "Fountain Drinking water",
-          "geo": {
-            "latitude": 45.99645,
-            "longitude": 6.24928
-          },
-          "categories": [
-            "Drinking water"
-          ]
+          "geo": {"latitude": 45.99645, "longitude": 6.24928},
+          "categories": ["Drinking water"]
         },
         {
           "id": "mS",
           "name": "WC publiques",
-          "geo": {
-            "latitude": 44.50427,
-            "longitude": 1.13662
-          },
-          "categories": [
-            "Drinking water"
-          ]
+          "geo": {"latitude": 44.50427, "longitude": 1.13662},
+          "categories": ["Drinking water"]
         },
         {
           "id": "mT",
           "name": "WC publiques",
-          "geo": {
-            "latitude": 44.50427,
-            "longitude": 1.13662
-          },
-          "categories": [
-            "Drinking water"
-          ]
+          "geo": {"latitude": 44.50427, "longitude": 1.13662},
+          "categories": ["Drinking water"]
         },
         {
           "id": "mU",
           "name": "Drinking water - place paul doumer, nantes",
-          "geo": {
-            "latitude": 47.22183,
-            "longitude": -1.57879
-          },
-          "categories": [
-            "Drinking water"
-          ]
+          "geo": {"latitude": 47.22183, "longitude": -1.57879},
+          "categories": ["Drinking water"]
         },
         {
           "id": "mV",
           "name": "Fountain",
-          "geo": {
-            "latitude": 43.95605,
-            "longitude": 5.02951
-          },
-          "categories": [
-            "Non-drinkable water"
-          ]
+          "geo": {"latitude": 43.95605, "longitude": 5.02951},
+          "categories": ["Non-drinkable water"]
         },
         {
           "id": "mW",
           "name": "Fountain",
-          "geo": {
-            "latitude": 43.95662,
-            "longitude": 5.02932
-          },
-          "categories": [
-            "Non-drinkable water"
-          ]
+          "geo": {"latitude": 43.95662, "longitude": 5.02932},
+          "categories": ["Non-drinkable water"]
         },
         {
           "id": "mX",
           "name": "Fountain",
-          "geo": {
-            "latitude": 43.95656,
-            "longitude": 5.02796
-          },
-          "categories": [
-            "Non-drinkable water"
-          ]
+          "geo": {"latitude": 43.95656, "longitude": 5.02796},
+          "categories": ["Non-drinkable water"]
         },
         {
           "id": "mY",
           "name": "Fountain",
-          "geo": {
-            "latitude": 43.95577,
-            "longitude": 5.02861
-          },
-          "categories": [
-            "Non-drinkable water"
-          ]
+          "geo": {"latitude": 43.95577, "longitude": 5.02861},
+          "categories": ["Non-drinkable water"]
         },
         {
           "id": "mZ",
           "name": "Fountain",
-          "geo": {
-            "latitude": 43.95743,
-            "longitude": 5.02968
-          },
-          "categories": [
-            "Non-drinkable water"
-          ]
+          "geo": {"latitude": 43.95743, "longitude": 5.02968},
+          "categories": ["Non-drinkable water"]
         }
       ]
-    }''';
+    };
+    final body = jsonEncode(json);
 
     final client = mockStreamedResponseClient(body);
 

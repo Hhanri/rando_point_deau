@@ -216,14 +216,14 @@ void main() {
         reset(remoteDataSource);
       });
 
-      const sample = [
-        SQFliteWaterSourceModel(
+      final sample = [
+        const SQFliteWaterSourceModel(
           id: "id1",
           name: "name1",
           geoPoint: GeoPoint(lat: 180, lng: 9),
           waterType: Water.drinking,
         ),
-        SQFliteWaterSourceModel(
+        const SQFliteWaterSourceModel(
           id: "id2",
           name: "name2",
           geoPoint: GeoPoint(lat: 180, lng: 9),

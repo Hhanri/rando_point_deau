@@ -15,7 +15,7 @@ final class OwaterWaterDataSource implements WaterRemoteDataSourceInterface {
   @override
   Future<List<WaterSourceEntity>> getAllWaterSources({
     ProgressCallback? progressCallback,
-  }) async {
+  }) {
     const url =
         "https://owaterorg.gogocarto.fr/api/elements.json?categories=5,6&excludeExternal=true";
 
@@ -23,17 +23,24 @@ final class OwaterWaterDataSource implements WaterRemoteDataSourceInterface {
       client: client,
       method: HttpMethod.get,
       url: url,
-      bodyTransformer: (body) {
-        final Map<String, dynamic> json = jsonDecode(body);
-        final List<dynamic> data = json['data'];
+      bodyTransformer: (body) async {
+        String dataBody = body.value.substring(
+          body.value.indexOf('"data":') + 7,
+          body.value.length - 1,
+        );
 
-        return data
-            .map<OwaterWaterSourceModel>(
-              (e) => OwaterWaterSourceModel.fromJson(e),
-            )
-            .toList();
+        final List<dynamic> data = jsonDecode(dataBody);
+
+        final res = List.generate(
+          data.length,
+          (index) => OwaterWaterSourceModel.fromJson(data[index]),
+        );
+
+        data.clear();
+        return res;
       },
       progressCallback: progressCallback,
+      defaultTotal: 81433206,
     );
   }
 }
