@@ -263,7 +263,10 @@ void main() {
         ).thenAnswer((_) async => sample);
 
         when(
-          () => localDataSource.insertWaterSources(sample),
+          () => localDataSource.insertWaterSources(
+            sample,
+            stepProgress: (current: 2, total: 2),
+          ),
         ).thenThrow("insert error");
 
         final res = await repo.downloadAndSave().run();
@@ -275,10 +278,15 @@ void main() {
           ),
         );
 
-        verify(() => localDataSource.insertWaterSources(sample)).called(1);
         verify(
           () => remoteDataSource.getAllWaterSources(
             stepProgress: (current: 1, total: 2),
+          ),
+        ).called(1);
+        verify(
+          () => localDataSource.insertWaterSources(
+            sample,
+            stepProgress: (current: 2, total: 2),
           ),
         ).called(1);
       });
@@ -291,7 +299,10 @@ void main() {
         ).thenAnswer((_) async => sample);
 
         when(
-          () => localDataSource.insertWaterSources(sample),
+          () => localDataSource.insertWaterSources(
+            sample,
+            stepProgress: (current: 2, total: 2),
+          ),
         ).thenAnswer(
           (_) async => const Empty(),
         );
@@ -303,10 +314,15 @@ void main() {
           const Right<Failure, EmptySuccess>(Success(value: Empty())),
         );
 
-        verify(() => localDataSource.insertWaterSources(sample)).called(1);
         verify(
           () => remoteDataSource.getAllWaterSources(
             stepProgress: (current: 1, total: 2),
+          ),
+        ).called(1);
+        verify(
+          () => localDataSource.insertWaterSources(
+            sample,
+            stepProgress: (current: 2, total: 2),
           ),
         ).called(1);
       });

@@ -25,8 +25,11 @@ final class WaterRepositoryImplementation implements WaterRepositoryInterface {
         progressCallback: progressCallback,
         stepProgress: (current: 1, total: 2),
       );
+      await localDataSource.insertWaterSources(
+        sources,
+        progressCallback: progressCallback,
+        stepProgress: (current: 2, total: 2),
       );
-      await localDataSource.insertWaterSources(sources);
       sources.clear();
       return const Empty();
     });
