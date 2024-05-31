@@ -24,7 +24,9 @@ final class WaterRepositoryImplementation implements WaterRepositoryInterface {
       final sources = await remoteDataSource.getAllWaterSources(
         progressCallback: progressCallback,
       );
-      return await localDataSource.insertWaterSources(sources);
+      await localDataSource.insertWaterSources(sources);
+      sources.clear();
+      return const Empty();
     });
   }
 
