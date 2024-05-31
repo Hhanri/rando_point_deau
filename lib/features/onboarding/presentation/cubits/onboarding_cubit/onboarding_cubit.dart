@@ -60,10 +60,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     );
 
     mainPort.listen((message) {
-      if (message is Progress) {
-        emit(OnboardingDownloading(message));
-        if (message.isComplete) mainPort.close();
-      }
+      if (message is Progress) emit(OnboardingDownloading(message));
 
       if (message is Result) {
         if (message is Failure) emit(OnboardingError(message: message.message));
