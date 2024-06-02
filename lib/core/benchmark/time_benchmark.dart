@@ -13,7 +13,9 @@ FutureOr<O> benchTime<I, O>({
 
   final end = DateTime.now();
   print("ENDING: $end");
-  print("TIME: ${end.millisecond - start.millisecond} ms");
+  print(
+    "TIME: ${end.millisecondsSinceEpoch - start.millisecondsSinceEpoch} ms",
+  );
 
   return res;
 }
