@@ -11,6 +11,7 @@ import 'package:rando_point_deau/features/water/domain/repository/water_reposito
 import 'package:rando_point_deau/features/water/domain/use_cases/water_download_and_save_use_case.dart';
 import 'package:rando_point_deau/features/water/domain/use_cases/water_has_local_data_use_case.dart';
 import 'package:rando_point_deau/features/water/domain/use_cases/water_search_use_case.dart';
+import 'package:rando_point_deau/features/water/presentation/cubits/water_downloader_cubit/water_downloader_cubit.dart';
 import 'package:sqflite/sqflite.dart';
 
 final sl = GetIt.instance;
@@ -51,10 +52,15 @@ Future<void> setupSL() async {
     ),
   );
 
+  sl.registerFactory<WaterDownloaderCubit>(
+    () => WaterDownloaderCubit(
+      waterDownloadAndSaveUseCase: sl.get<WaterDownloadAndSaveUseCase>(),
+    ),
+  );
+
   sl.registerFactory<OnboardingCubit>(
     () => OnboardingCubit(
       waterHasLocalDataUseCase: sl.get<WaterHasLocalDataUseCase>(),
-      waterDownloadAndSaveUseCase: sl.get<WaterDownloadAndSaveUseCase>(),
     )..init(),
   );
 }
