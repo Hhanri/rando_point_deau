@@ -54,7 +54,6 @@ Future<void> setupSL() async {
   sl.registerFactory<OnboardingCubit>(
     () => OnboardingCubit(
       waterHasLocalDataUseCase: sl.get<WaterHasLocalDataUseCase>(),
-      waterDownloadAndSaveUseCase: sl.get<WaterDownloadAndSaveUseCase>(),
     )..init(),
   );
 }
