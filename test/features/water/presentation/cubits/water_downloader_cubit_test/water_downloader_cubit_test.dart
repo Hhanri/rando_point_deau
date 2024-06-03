@@ -36,12 +36,15 @@ main() {
           ),
         );
 
-        await cubit.download();
-
         expect(
-          cubit.state,
-          WaterDownloaderError("download and save error"),
+          cubit.stream,
+          emitsInOrder([
+            WaterDownloaderLoading(),
+            WaterDownloaderError("download and save error"),
+          ]),
         );
+
+        await cubit.download();
       });
 
       test("download and save success", () async {
@@ -59,12 +62,15 @@ main() {
           ),
         );
 
-        await cubit.download();
-
         expect(
-          cubit.state,
-          WaterDownloaderSuccess(),
+          cubit.stream,
+          emitsInOrder([
+            WaterDownloaderLoading(),
+            WaterDownloaderSuccess(),
+          ]),
         );
+
+        await cubit.download();
       });
     });
   });

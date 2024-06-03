@@ -18,6 +18,7 @@ class WaterDownloaderCubit extends Cubit<WaterDownloaderState> {
   }) : super(WaterDownloaderInitial());
 
   Future<void> download() async {
+    emit(WaterDownloaderLoading());
     final mainPort = ReceivePort("main");
     final token = RootIsolateToken.instance;
     final _IsolateParam param = (
