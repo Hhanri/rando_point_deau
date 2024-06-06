@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:rando_point_deau/core/result/result.dart';
+import 'package:rando_point_deau/core/utils/isolates.dart';
 import 'package:rando_point_deau/core/wrappers/cached_stream.dart';
 import 'package:rando_point_deau/features/map/presentation/cubits/map_filters_cubit/map_filters_cubit.dart';
 import 'package:rando_point_deau/features/water/domain/entities/water_source_entity.dart';
@@ -37,18 +38,15 @@ class MapCubit extends Cubit<MapState> {
         waterTypes: filtersStateStream.mostRecent.filters,
         bounds: bounds,
       ),
-      token: RootIsolateToken.instance,
     );
 
     emit(MapLoading());
 
-    final res = await compute(
-      (message) async {
-        BackgroundIsolateBinaryMessenger.ensureInitialized(message.token!);
-        return message.useCase.call(message.filter).run();
-      },
+    final res = await runCompute<_SearchMessage, _SearchUseCaseRes>(
+      (message) => message.data.useCase.call(message.data.filter).run(),
       message,
     );
+
     res.fold(
       (failure) => emit(MapError(failure.message)),
       (success) => emit(
@@ -63,3 +61,10 @@ class MapCubit extends Cubit<MapState> {
     return super.close();
   }
 }
+
+typedef _SearchUseCaseRes = Either<Failure, Success<List<WaterSourceEntity>>>;
+
+typedef _SearchMessage = ({
+  WaterSearchUseCase useCase,
+  WaterSourceFilterEntity filter,
+});
