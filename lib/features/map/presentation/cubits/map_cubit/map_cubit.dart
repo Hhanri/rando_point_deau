@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rando_point_deau/core/wrappers/cached_stream.dart';
 import 'package:rando_point_deau/features/map/presentation/cubits/map_filters_cubit/map_filters_cubit.dart';
@@ -29,16 +31,24 @@ class MapCubit extends Cubit<MapState> {
   }
 
   Future<void> search(GeoBounds bounds) async {
-    emit(MapLoading());
-    final res = await waterSearchUseCase
-        .call(
-          WaterSourceFilterEntity(
-            waterTypes: filtersStateStream.mostRecent.filters,
-            bounds: bounds,
-          ),
-        )
-        .run();
+    final message = (
+      useCase: waterSearchUseCase,
+      filter: WaterSourceFilterEntity(
+        waterTypes: filtersStateStream.mostRecent.filters,
+        bounds: bounds,
+      ),
+      token: RootIsolateToken.instance,
+    );
 
+    emit(MapLoading());
+
+    final res = await compute(
+      (message) async {
+        BackgroundIsolateBinaryMessenger.ensureInitialized(message.token!);
+        return message.useCase.call(message.filter).run();
+      },
+      message,
+    );
     res.fold(
       (failure) => emit(MapError(failure.message)),
       (success) => emit(
