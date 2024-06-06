@@ -6,6 +6,7 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:rando_point_deau/core/theme/padding.dart';
+import 'package:rando_point_deau/core/utils/list.dart';
 import 'package:rando_point_deau/core/value_objects/geopoint.dart';
 import 'package:rando_point_deau/features/map/presentation/cubits/map_cubit/map_cubit.dart';
 import 'package:rando_point_deau/features/map/presentation/widgets/map_widget/map_widget_interface.dart';
@@ -84,11 +85,9 @@ class _FlutterMapWidgetState extends State<FlutterMapWidget>
             alignment: Alignment.center,
             forceIntegerZoomLevel: true,
             maxZoom: 18,
-            markers: List.generate(
-              widget.waterSources.length,
-              (index) => Marker(
-                point: LatLng(widget.waterSources[index].geoPoint.lat,
-                    widget.waterSources[index].geoPoint.lng),
+            markers: widget.waterSources.mapList(
+              (e) => Marker(
+                point: LatLng(e.geoPoint.lat, e.geoPoint.lng),
                 child: const FlutterLogo(),
               ),
             ),
