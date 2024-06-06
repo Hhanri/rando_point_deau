@@ -25,7 +25,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
 
-Future<void> setupSL() async {
+typedef ContainerSetupFunc = Future<void> Function(GetIt sl);
+
+Future<void> setupSL(
+    [List<ContainerSetupFunc> setupFunctions = const []]) async {
   final httpClient = http.Client();
 
   final db = await SQFliteConfig.openDatabase("rando_point_deau.db");
@@ -103,4 +106,8 @@ Future<void> setupSL() async {
       filtersStateStream: CachedStream(p1.stream),
     )..init(),
   );
+
+  for (final func in setupFunctions) {
+    await func(sl);
+  }
 }
