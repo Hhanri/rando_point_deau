@@ -1,7 +1,7 @@
+import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 abstract final class SQFliteConfig {
-
   static const waterSourcesTable = "water_sources";
 
   static final dbV1 = OpenDatabaseOptions(
@@ -21,8 +21,15 @@ abstract final class SQFliteConfig {
     );''');
   }
 
+  static Future<Database> openDatabase(
+    String name, {
+    OpenDatabaseOptions? options,
+  }) async {
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, name);
+    return await databaseFactory.openDatabase(
+      path,
+      options: options ?? dbV1,
+    );
+  }
 }
-
-
-
-

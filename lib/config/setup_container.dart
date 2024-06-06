@@ -22,17 +22,13 @@ import 'package:rando_point_deau/features/water/domain/use_cases/water_has_local
 import 'package:rando_point_deau/features/water/domain/use_cases/water_search_use_case.dart';
 import 'package:rando_point_deau/features/water/presentation/cubits/water_downloader_cubit/water_downloader_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sqflite/sqflite.dart';
 
 final sl = GetIt.instance;
 
 Future<void> setupSL() async {
   final httpClient = http.Client();
 
-  final db = await databaseFactory.openDatabase(
-    "rando_point_deau.db",
-    options: SQFliteConfig.dbV1,
-  );
+  final db = await SQFliteConfig.openDatabase("rando_point_deau.db");
 
   final prefs = await SharedPreferences.getInstance();
 
