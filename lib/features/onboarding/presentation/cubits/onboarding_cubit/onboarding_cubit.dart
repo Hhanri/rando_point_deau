@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rando_point_deau/core/value_objects/progress.dart';
 import 'package:rando_point_deau/features/water/domain/use_cases/water_has_local_data_use_case.dart';
 
 part 'onboarding_state.dart';
