@@ -14,15 +14,6 @@ final class OnboardingReady extends OnboardingState {
   List<Object?> get props => [];
 }
 
-final class OnboardingDownloading extends OnboardingState {
-  final Progress progress;
-
-  const OnboardingDownloading(this.progress);
-
-  @override
-  List<Object?> get props => [progress];
-}
-
 final class OnboardingError extends OnboardingState {
   final String message;
 
