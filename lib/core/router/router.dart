@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rando_point_deau/features/map/presentation/pages/map_page_wrapper.dart';
 import 'package:rando_point_deau/features/onboarding/presentation/cubits/onboarding_cubit/onboarding_cubit.dart';
-import 'package:rando_point_deau/features/onboarding/presentation/pages/onboarding_page_wrapper.dart';
+import 'package:rando_point_deau/features/onboarding/presentation/pages/onboarding_page.dart';
 
 final class AppRouter {
   final OnboardingCubit onboardingCubit;
@@ -39,7 +39,7 @@ final class AppRouter {
         name: onboardingName,
         pageBuilder: (context, state) {
           return const MaterialPage(
-            child: OnboardingPageWrapper(),
+            child: OnboardingPage(),
           );
         },
       ),
