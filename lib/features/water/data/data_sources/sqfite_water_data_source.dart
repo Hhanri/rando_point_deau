@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:rando_point_deau/core/db/sqflite_setup.dart';
 import 'package:rando_point_deau/core/result/empty.dart';
+import 'package:rando_point_deau/core/utils/list.dart';
 import 'package:rando_point_deau/core/value_objects/progress.dart';
 import 'package:rando_point_deau/features/water/data/data_sources/water_local_data_source_interface.dart';
 import 'package:rando_point_deau/features/water/data/models/sqflite_water_source_model.dart';
@@ -40,7 +41,7 @@ final class SQFliteWaterDataSource implements WaterLocalDataSourceInterface {
       where: query,
       whereArgs: queryArgs,
     );
-    return res.map(SQFliteWaterSourceModel.fromJson).toList();
+    return res.mapList(SQFliteWaterSourceModel.fromJson);
   }
 
   @override
@@ -71,7 +72,7 @@ final class SQFliteWaterDataSource implements WaterLocalDataSourceInterface {
       where: query,
       whereArgs: queryArgs,
     );
-    return res.map(SQFliteWaterSourceModel.fromJson).toList();
+    return res.mapList(SQFliteWaterSourceModel.fromJson);
   }
 
   @override

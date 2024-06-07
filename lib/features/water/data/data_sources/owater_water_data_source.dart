@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rando_point_deau/core/http/http_methods.dart';
 import 'package:rando_point_deau/core/http/send_http_with_progress.dart';
+import 'package:rando_point_deau/core/utils/list.dart';
 import 'package:rando_point_deau/core/value_objects/progress.dart';
 import 'package:rando_point_deau/features/water/data/data_sources/water_remote_data_source_interface.dart';
 import 'package:rando_point_deau/features/water/data/models/owater_water_source_model.dart';
@@ -33,10 +34,7 @@ final class OwaterWaterDataSource implements WaterRemoteDataSourceInterface {
 
         final List<dynamic> data = jsonDecode(dataBody);
 
-        final res = List.generate(
-          data.length,
-          (index) => OwaterWaterSourceModel.fromJson(data[index]),
-        );
+        final res = data.mapList((e) => OwaterWaterSourceModel.fromJson(e));
 
         data.clear();
         return res;
