@@ -103,7 +103,10 @@ Future<void> setupSL(
   sl.registerFactoryParam<MapCubit, MapFiltersCubit, void>(
     (p1, _) => MapCubit(
       waterSearchUseCase: sl.get<WaterSearchUseCase>(),
-      filtersStateStream: CachedStream(p1.stream),
+      filtersStateStream: CachedStream(
+        p1.stream,
+        defaultValue: MapFiltersState.initial(),
+      ),
     )..init(),
   );
 

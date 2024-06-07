@@ -23,7 +23,10 @@ void main() {
     final streamController = StreamController<MapFiltersState>();
     final cubit = MapCubit(
       waterSearchUseCase: waterSearchUseCase,
-      filtersStateStream: CachedStream(streamController.stream),
+      filtersStateStream: CachedStream(
+        streamController.stream,
+        defaultValue: MapFiltersState.initial(),
+      ),
     );
     return (cubit, streamController);
   }

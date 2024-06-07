@@ -2,12 +2,13 @@ import 'dart:async';
 
 final class CachedStream<T> extends Stream<T> {
   final Stream<T> stream;
+  final T defaultValue;
 
-  late T _mostRecent;
+  T? _mostRecent;
 
-  T get mostRecent => _mostRecent;
+  T get mostRecent => _mostRecent ?? defaultValue;
 
-  CachedStream(this.stream);
+  CachedStream(this.stream, {required this.defaultValue});
 
   @override
   StreamSubscription<T> listen(
